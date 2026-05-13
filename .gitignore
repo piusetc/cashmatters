@@ -33,10 +33,10 @@ db.sqlite3-journal
 pgdata/
 
 # Static files
-staticfiles/
+# staticfiles/
 
 # Media files
-media/
+# media/
 
 # Virtual environment
 .venv/

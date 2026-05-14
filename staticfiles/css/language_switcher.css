@@ -1,0 +1,405 @@
+/* ==================================================================
+   Cash Matters — Language Switcher styles (v3)
+
+   New aesthetic: refined editorial pill + card-style panel with real
+   SVG flag glyphs. Drop-in replacement for the previous v2 styles.
+
+   Behaviour is driven by the small script inside the partial; this
+   stylesheet only owns appearance and motion.
+   ================================================================== */
+
+.cm-lang {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  --cm-accent: #4CD1C2;          /* matches site nav accent */
+  --cm-accent-soft: rgba(76, 209, 194, 0.18);
+  --cm-border: rgba(255, 255, 255, 0.16);
+  --cm-bg-trigger: rgba(255, 255, 255, 0.06);
+  --cm-bg-trigger-hover: rgba(255, 255, 255, 0.12);
+  --cm-bg-panel: rgba(8, 28, 25, 0.96);
+  --cm-text: #fff;
+  --cm-text-dim: rgba(255, 255, 255, 0.55);
+  --cm-text-faint: rgba(255, 255, 255, 0.38);
+}
+
+/* -----------------------------------------------------------
+   Trigger pill
+   ----------------------------------------------------------- */
+.cm-lang__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px 0 4px;
+  background: var(--cm-bg-trigger);
+  border: 1px solid var(--cm-border);
+  border-radius: 999px;
+  color: var(--cm-text);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cm-lang__trigger:hover {
+  background: var(--cm-bg-trigger-hover);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.cm-lang__trigger:focus-visible {
+  outline: 2px solid var(--cm-accent);
+  outline-offset: 2px;
+}
+.cm-lang.is-open .cm-lang__trigger {
+  background: var(--cm-accent-soft);
+  border-color: var(--cm-accent);
+}
+
+/* Flag chip inside the trigger */
+.cm-lang__trigger .cm-lang__flag {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-grid;
+  place-items: center;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22) inset;
+  flex-shrink: 0;
+}
+.cm-lang__trigger .cm-lang__flag svg {
+  width: 130%;          /* slight crop so the flag fills the circle */
+  height: 130%;
+  display: block;
+}
+
+.cm-lang__code {
+  display: inline-block;
+  min-width: 18px;
+  text-align: left;
+}
+
+/* Chevron + spinner share the same slot */
+.cm-lang__chev {
+  margin-left: 2px;
+  opacity: 0.75;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s ease;
+}
+.cm-lang.is-open .cm-lang__chev { transform: rotate(180deg); opacity: 1; }
+
+.cm-lang__spinner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  color: var(--cm-accent);
+}
+.cm-lang.is-loading .cm-lang__chev { opacity: 0; }
+.cm-lang.is-loading .cm-lang__spinner {
+  opacity: 1;
+  animation: cm-lang-spin 0.9s linear infinite;
+}
+@keyframes cm-lang-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* -----------------------------------------------------------
+   Panel — `position: fixed` so it always escapes any parent
+   stacking context (carousels, transforms, will-change, etc).
+   The JS sets --cm-panel-top and --cm-panel-right inline on
+   the root when the panel opens, so positioning is dynamic.
+   ----------------------------------------------------------- */
+.cm-lang__panel {
+  position: fixed;
+  top: var(--cm-panel-top, 60px);
+  right: var(--cm-panel-right, 16px);
+  width: 288px;
+  background: var(--cm-bg-panel);
+  border: 1px solid var(--cm-border);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow:
+    0 24px 60px -16px rgba(0, 0, 0, 0.7),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top right;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(.4,0,.2,1), visibility 0s 0.22s;
+  z-index: 99999;
+}
+.cm-lang.is-open .cm-lang__panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(.4,0,.2,1), visibility 0s;
+}
+
+/* Decorative corner gleam */
+.cm-lang__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 60% at 100% 0%, rgba(76, 209, 194, 0.08), transparent 60%);
+}
+
+/* Panel header */
+.cm-lang__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  margin-bottom: 6px;
+}
+.cm-lang__panel-label {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cm-text);
+  letter-spacing: -0.005em;
+}
+.cm-lang__panel-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--cm-text-faint);
+}
+
+/* List */
+.cm-lang__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cm-lang__list li {
+  list-style: none;
+}
+
+/* Staggered reveal of items when panel opens */
+.cm-lang.is-open .cm-lang__list li {
+  animation: cm-lang-item-in 0.32s cubic-bezier(.4,0,.2,1) both;
+}
+.cm-lang.is-open .cm-lang__list li:nth-child(1) { animation-delay: 0.04s; }
+.cm-lang.is-open .cm-lang__list li:nth-child(2) { animation-delay: 0.08s; }
+.cm-lang.is-open .cm-lang__list li:nth-child(3) { animation-delay: 0.12s; }
+.cm-lang.is-open .cm-lang__list li:nth-child(4) { animation-delay: 0.16s; }
+.cm-lang.is-open .cm-lang__list li:nth-child(5) { animation-delay: 0.20s; }
+.cm-lang.is-open .cm-lang__list li:nth-child(6) { animation-delay: 0.24s; }
+@keyframes cm-lang-item-in {
+  from { opacity: 0; transform: translateX(6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Each language row */
+.cm-lang__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  color: var(--cm-text);
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  transition: background 0.16s ease;
+  font-family: inherit;
+}
+.cm-lang__item:hover,
+.cm-lang__item:focus-visible {
+  background: rgba(255, 255, 255, 0.05);
+  outline: none;
+}
+.cm-lang__item.is-active {
+  background: linear-gradient(90deg, rgba(76, 209, 194, 0.16), rgba(76, 209, 194, 0.02) 75%);
+}
+.cm-lang__item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 22px;
+  background: var(--cm-accent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Flag in list */
+.cm-lang__item .cm-lang__flag {
+  width: 24px;
+  height: 18px;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+.cm-lang__item .cm-lang__flag svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Text block */
+.cm-lang__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.cm-lang__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--cm-text);
+}
+.cm-lang__native {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cm-text-dim);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+/* Tick */
+.cm-lang__tick {
+  color: var(--cm-accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(.4,0,.2,1);
+  flex-shrink: 0;
+}
+.cm-lang__item.is-active .cm-lang__tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Panel footer */
+.cm-lang__panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px 6px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--cm-text-faint);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.cm-lang__panel-foot svg { opacity: 0.7; flex-shrink: 0; }
+
+/* -----------------------------------------------------------
+   Google Translate — hide the default banner & artefacts
+   (kept from previous stylesheet, required for the engine to
+    keep working without showing its own UI)
+   ----------------------------------------------------------- */
+/* -----------------------------------------------------------
+   Google Translate — hide every visible artefact the widget
+   tries to inject, without breaking the engine itself.
+
+   IMPORTANT: we deliberately do NOT hide #google_translate_element
+   or .skiptranslate iframes via `display: none` — Google needs
+   those to exist in the DOM to create the .goog-te-combo <select>
+   that translatePage() drives. The hidden container is set to
+   display:none inline in base.html, but the engine's internal
+   iframe must remain renderable.
+   ----------------------------------------------------------- */
+
+/* The big white "Translated into: X" banner that Google injects at the
+   top of the page. Match every known class variant. */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe.skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+/* Google pushes the body down to make room for its banner. Pin it back. */
+body { top: 0 !important; position: static !important; }
+html { margin-top: 0 !important; }
+
+/* Tooltip / balloon that appears when hovering translated text. */
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight {
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* The little flag widget Google sometimes drops top-left. */
+.goog-logo-link,
+.goog-te-gadget,
+.goog-te-gadget .goog-te-combo,
+.goog-te-gadget > span {
+  visibility: hidden !important;
+}
+/* Keep the engine's combo accessible to the script — we override the
+   gadget's visibility, then explicitly re-expose the select. */
+.goog-te-combo { visibility: hidden !important; position: absolute !important; left: -9999px !important; }
+
+/* -----------------------------------------------------------
+   Backwards compatibility: legacy hardcoded switchers
+   (a few templates — author.html, blog_page.html, new_page.html —
+    still ship inline dropdowns using class names like
+    .lang-switch-btn. They call the same translatePage() so they
+    function fine; this rule just stops them looking broken on
+    the dark navbar.)
+   ----------------------------------------------------------- */
+.lang-switch-btn.active { color: var(--cm-accent) !important; font-weight: 600; }
+
+/* -----------------------------------------------------------
+   Responsive
+   ----------------------------------------------------------- */
+@media (max-width: 540px) {
+  .cm-lang__panel {
+    /* On narrow screens, expand to use most of the viewport width and pin
+       to the right edge. Top is still set by JS via --cm-panel-top. */
+    left: 12px;
+    width: auto;
+    max-width: 360px;
+    margin-left: auto;
+  }
+  .cm-lang__code { font-size: 11px; }
+  .cm-lang__trigger { padding: 0 10px 0 4px; height: 32px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cm-lang__panel,
+  .cm-lang__chev,
+  .cm-lang__tick,
+  .cm-lang__item,
+  .cm-lang__trigger,
+  .cm-lang.is-open .cm-lang__list li {
+    transition: none !important;
+    animation: none !important;
+  }
+}

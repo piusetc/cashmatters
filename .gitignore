@@ -53,9 +53,6 @@ Thumbs.db
 
 # Deployment
 deployment_package.tar.gz
-<<<<<<< Updated upstream
-server.log
-=======
 server.logimports/media_export.tar.gz 
 *.tar.gz 
 *.sqlite3 
@@ -64,4 +61,3 @@ server.logimports/media_export.tar.gz
 imports/media_export.tar.gz
 imports/production_data.json
 imports/production.sql
->>>>>>> Stashed changes

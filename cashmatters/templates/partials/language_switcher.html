@@ -1,0 +1,298 @@
+{% comment %}
+====================================================================
+  Cash Matters — Language Switcher Partial (v3)
+
+  Refreshed visual design. Behaviour unchanged: still calls
+  translatePage(lang) which is defined in base.html and drives the
+  hidden Google Translate widget (#google_translate_element).
+
+  Real SVG flag glyphs, no emoji, no gradient approximations.
+  All translation logic remains in base.html.
+====================================================================
+{% endcomment %}
+
+<div class="cm-lang" data-lang-root>
+  <button class="cm-lang__trigger" type="button"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label="Select language"
+          data-lang-trigger>
+    <span class="cm-lang__flag" data-lang-current-flag aria-hidden="true">
+      {# Default flag: GB. Swapped at runtime by the script below. #}
+      <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><clipPath id="cmgb"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="cmgb2"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#cmgb)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#cmgb2)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>
+    </span>
+    <span class="cm-lang__code" data-lang-current-code>EN</span>
+    <svg class="cm-lang__chev" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+      <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="cm-lang__spinner" data-lang-spinner aria-hidden="true">
+      <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="9 28"/></svg>
+    </span>
+  </button>
+
+  <div class="cm-lang__panel" role="listbox" aria-label="Languages" data-lang-panel>
+    <div class="cm-lang__panel-head">
+      <span class="cm-lang__panel-label">Translate site</span>
+      <span class="cm-lang__panel-meta">6 languages</span>
+    </div>
+
+    <ul class="cm-lang__list" role="presentation">
+      {# English #}
+      <li>
+        <button type="button" class="cm-lang__item is-active" role="option" aria-selected="true"
+                data-lang="en" data-code="EN"
+                onclick="translatePage('en'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><clipPath id="lsgb"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="lsgb2"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#lsgb)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#lsgb2)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">English</span>
+            <span class="cm-lang__native">English</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+
+      {# German #}
+      <li>
+        <button type="button" class="cm-lang__item" role="option" aria-selected="false"
+                data-lang="de" data-code="DE"
+                onclick="translatePage('de'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect width="5" height="1" y="0" fill="#000"/><rect width="5" height="1" y="1" fill="#DD0000"/><rect width="5" height="1" y="2" fill="#FFCE00"/></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">German</span>
+            <span class="cm-lang__native">Deutsch</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+
+      {# French #}
+      <li>
+        <button type="button" class="cm-lang__item" role="option" aria-selected="false"
+                data-lang="fr" data-code="FR"
+                onclick="translatePage('fr'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect width="1" height="2" x="0" fill="#002395"/><rect width="1" height="2" x="1" fill="#FFFFFF"/><rect width="1" height="2" x="2" fill="#ED2939"/></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">French</span>
+            <span class="cm-lang__native">Français</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+
+      {# Italian #}
+      <li>
+        <button type="button" class="cm-lang__item" role="option" aria-selected="false"
+                data-lang="it" data-code="IT"
+                onclick="translatePage('it'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect width="1" height="2" x="0" fill="#008C45"/><rect width="1" height="2" x="1" fill="#F4F5F0"/><rect width="1" height="2" x="2" fill="#CD212A"/></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">Italian</span>
+            <span class="cm-lang__native">Italiano</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+
+      {# Spanish #}
+      <li>
+        <button type="button" class="cm-lang__item" role="option" aria-selected="false"
+                data-lang="es" data-code="ES"
+                onclick="translatePage('es'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect width="5" height="3" fill="#AA151B"/><rect width="5" height="1.5" y="0.75" fill="#F1BF00"/></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">Spanish</span>
+            <span class="cm-lang__native">Español</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+
+      {# Dutch #}
+      <li>
+        <button type="button" class="cm-lang__item" role="option" aria-selected="false"
+                data-lang="nl" data-code="NL"
+                onclick="translatePage('nl'); return false;">
+          <span class="cm-lang__flag">
+            <svg viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect width="5" height="1" y="0" fill="#AE1C28"/><rect width="5" height="1" y="1" fill="#FFFFFF"/><rect width="5" height="1" y="2" fill="#21468B"/></svg>
+          </span>
+          <span class="cm-lang__text">
+            <span class="cm-lang__name">Dutch</span>
+            <span class="cm-lang__native">Nederlands</span>
+          </span>
+          <svg class="cm-lang__tick" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+            <path d="M2.5 7.5L6 11L11.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+    </ul>
+
+    <div class="cm-lang__panel-foot">
+      <svg viewBox="0 0 14 14" width="11" height="11" aria-hidden="true">
+        <path d="M7 1.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 0v11m-5.5-5.5h11" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      <span>Translations powered by Google</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Initialise each switcher independently so multiple instances on a page co-exist.
+  document.querySelectorAll('[data-lang-root]').forEach(function (root) {
+    if (root.dataset.langInit === '1') return;
+    root.dataset.langInit = '1';
+
+    var trigger = root.querySelector('[data-lang-trigger]');
+    var panel   = root.querySelector('[data-lang-panel]');
+    var spinner = root.querySelector('[data-lang-spinner]');
+    var codeEl  = root.querySelector('[data-lang-current-code]');
+    var flagEl  = root.querySelector('[data-lang-current-flag]');
+    var items   = root.querySelectorAll('.cm-lang__item');
+
+    // Helper: when we copy a flag's SVG into the trigger, any clipPath IDs need
+    // to be made unique — otherwise we end up with duplicate IDs in the DOM
+    // (the original in the list + the clone in the trigger), which breaks the
+    // clip-path reference and can cause the flag to render blank.
+    var idCounter = 0;
+    function uniquifyFlag(html) {
+      var unique = '_t' + (++idCounter) + '_';
+      return html.replace(/id="([^"]+)"/g, function (_, id) {
+        return 'id="' + unique + id + '"';
+      }).replace(/url\(#([^)]+)\)/g, function (_, id) {
+        return 'url(#' + unique + id + ')';
+      }).replace(/clip-path="url\(#([^)]+)\)"/g, function (_, id) {
+        return 'clip-path="url(#' + unique + id + ')"';
+      });
+    }
+
+    function positionPanel() {
+      // Panel is `position: fixed`, so we position it relative to the viewport
+      // using the trigger's bounding rect. This guarantees it sits above any
+      // ancestor stacking context (carousels, transforms, etc).
+      var rect = trigger.getBoundingClientRect();
+      root.style.setProperty('--cm-panel-top', (rect.bottom + 8) + 'px');
+      // Distance from the right edge of the viewport to the right edge of the trigger.
+      root.style.setProperty('--cm-panel-right', (window.innerWidth - rect.right) + 'px');
+    }
+
+    function open()  {
+      positionPanel();
+      root.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+    function close() { root.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
+    function toggle(){ root.classList.contains('is-open') ? close() : open(); }
+
+    // Reposition on window resize/scroll while open so the panel tracks the trigger.
+    window.addEventListener('resize', function () { if (root.classList.contains('is-open')) positionPanel(); });
+    window.addEventListener('scroll',  function () { if (root.classList.contains('is-open')) positionPanel(); }, true);
+
+    trigger.addEventListener('click', function (e) { e.stopPropagation(); toggle(); });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+      if (!root.contains(e.target)) close();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && root.classList.contains('is-open')) {
+        close();
+        trigger.focus();
+      }
+    });
+
+    // Item click: show spinner, mark active, update trigger label + flag.
+    items.forEach(function (item) {
+      item.addEventListener('click', function () {
+        var code = item.dataset.code || 'EN';
+        var flagHtml = uniquifyFlag(item.querySelector('.cm-lang__flag').innerHTML);
+
+        // Update trigger UI immediately for perceived responsiveness.
+        if (codeEl) codeEl.textContent = code;
+        if (flagEl) flagEl.innerHTML = flagHtml;
+
+        // Toggle active state in the list
+        items.forEach(function (b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        item.classList.add('is-active');
+        item.setAttribute('aria-selected', 'true');
+
+        // Spinner while Google Translate processes the page.
+        root.classList.add('is-loading');
+        setTimeout(function () { root.classList.remove('is-loading'); }, 1200);
+
+        close();
+      });
+    });
+
+    // Restore active visual state from localStorage on load (matches translatePage logic in base.html).
+    // Defensive: only honour the saved value if it matches one of our 6 supported language codes.
+    try {
+      var saved = localStorage.getItem('preferredLanguage');
+      var validLangs = {};
+      items.forEach(function (item) { validLangs[item.dataset.lang] = item; });
+
+      var matchedItem = (saved && validLangs[saved]) ? validLangs[saved] : null;
+      if (matchedItem) {
+        var code = matchedItem.dataset.code || 'EN';
+        var flagHtml = uniquifyFlag(matchedItem.querySelector('.cm-lang__flag').innerHTML);
+        if (codeEl) codeEl.textContent = code;
+        if (flagEl) flagEl.innerHTML = flagHtml;
+        items.forEach(function (b) { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
+        matchedItem.classList.add('is-active');
+        matchedItem.setAttribute('aria-selected', 'true');
+      } else {
+        // No valid saved preference: force the trigger label to "EN" so nothing
+        // else on the page can leave a stale value showing.
+        if (codeEl) codeEl.textContent = 'EN';
+      }
+    } catch (err) { /* localStorage unavailable — ignore */ }
+  });
+
+  // Belt-and-braces: Google Translate injects an iframe banner at the top of
+  // the page after our CSS loads. The CSS rule for `.goog-te-banner-frame`
+  // should hide it, but some Google variants vary the class names. We watch
+  // for any newly-added iframe matching the banner pattern and force-hide it.
+  // (base.html already runs its own observer to keep `document.body.style.top`
+  // pinned to 0px — we don't duplicate that here.)
+  function hideGoogleBanner() {
+    var frames = document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame');
+    for (var i = 0; i < frames.length; i++) {
+      frames[i].style.display = 'none';
+      frames[i].style.visibility = 'hidden';
+      frames[i].style.height = '0';
+    }
+  }
+  hideGoogleBanner();
+  document.addEventListener('DOMContentLoaded', hideGoogleBanner);
+  window.addEventListener('load', hideGoogleBanner);
+  if (window.MutationObserver) {
+    new MutationObserver(hideGoogleBanner).observe(document.documentElement, {
+      childList: true, subtree: true
+    });
+  }
+})();
+</script>
